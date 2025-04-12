@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:f="jakarta.faces.core"
+                template="/WEB-INF/templates/mainTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <style>
+            #mapEmployee, #chart {
+                height: 50vh;
+                width: 100%;
+                z-index: 1;
+            }
+
+        </style>
+        
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet" />
+        
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Employee Dashboard</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-download fa-sm text-white-50"></i> Start Task
+            </a>
+        </div>
+         <div class="row">
+            <!-- Bar Chart -->
+            <div class="col-xl-6 col-12 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Vehile Distribution</h6>
+                    </div>
+                    <div class="card-body">
+                        <p:growl id="growl" />
+                        <p:chart id="chart" value="#{dashboardBean.barChartJson}" 
+                                style="width: 100%; height: 400px;"
+                                widgetVar="vehicleChart">
+                            
+                        </p:chart>  
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Visualization -->
+            <div class="col-xl-6 col-12 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Map</h6>
+                    </div>
+                        
+                    <div class="card-body p-0 h-100">
+                        <h:form id="mapForm">
+                            <div id="mapEmployee" ></div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Bar Chart -->
+            <div class="col-12 mb-4">
+                <div class="card shadow h-100">
+                   <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tasks</h6>
+                    </div>
+                    <div class="card-body p-0">
+                        
+                    </div> 
+                </div>
+            </div>
+        </div>
+        
+        <h:outputScript>
+                var markerImageUrl = "#{resource['images/blue.png']}";
+        </h:outputScript>
+        <script   src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js" ></script>
+        <h:outputScript library="leaflet" name="leaflet.js"/>
+        <h:outputScript library="js" name="mapEmployee.js"/>
+        <h:outputScript library="js" name="turf.min.js"/> 
+    </ui:define>
+</ui:composition>

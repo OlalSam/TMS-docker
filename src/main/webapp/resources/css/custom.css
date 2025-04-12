@@ -1,0 +1,122 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Apr 5, 2025, 1:28:54 PM
+    Author     : olal
+*/
+
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 11, 2025, 1:10:19 PM
+    Author     : olal
+*/
+
+/*-----------------------------------------------------
+  Side Navigation Styling – TabMenu Inspired
+-----------------------------------------------------*/
+
+/* Sidebar container styling with spacing and shadow */
+.sidebar {
+    background-color: #0d6efd; /* White background */
+    border-radius: 10px;         /* Rounded corners */
+    border: 1px solid #ddd;      /* Light border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Smooth shadow */
+    padding: 5px;                /* Internal spacing */
+    margin: 10px;                /* External spacing */
+    margin-left: 2px;
+    width: 155px;
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Inner container for flexible layout */
+.sidebar-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 10px; /* Space between sections */
+}
+
+/* Sidebar menu styling (list container) */
+.sidebar-menu {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    height: 100%;
+    gap: 10px;            /* Space between menu items */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Menu item container styling */
+.sidebar-menu li {
+    padding: 5px 10px;  /* Padding around each menu item */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition */
+}
+
+/* Menu item link styling */
+.sidebar-menu li a {
+    color: #333;  /* Text color */
+    font-family: 'Granjon', sans-serif;
+    text-decoration: none;  /* Remove underline */
+    display: flex;
+    align-items: center;
+}
+
+/* Icon styling within menu item */
+.sidebar-menu li a .icon-holder {
+    font-size: 20px; /* Adjust icon size if needed */
+}
+
+/* Menu item text styling */
+.sidebar-menu li a .title {
+    font-family: 'Granjon', sans-serif;
+    font-size: 18px;
+    margin-left: 10px; /* Space between icon and text */
+}
+
+/* Hover effect for menu items */
+.sidebar-menu li:hover {
+    background-color: #e0e0e0; /* Darker background on hover */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Lighter shadow on hover */
+}
+
+/* Logout Button Styling */
+.logout-button {
+    margin-top: auto;  /* Pushes logout button to the bottom */
+    padding: 15px;
+    text-align: center;
+}
+
+.logout-button a {
+    color: #333;
+    font-family: 'Granjon', sans-serif;
+    font-size: 18px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover effect for logout button */
+.logout-button a:hover {
+    background-color: #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/*-----------------------------------------------------
+  (Optional) Additional Styling for PrimeIcons on Buttons
+-----------------------------------------------------*/
+.pi {
+    vertical-align: middle;
+    margin-right: 5px; /* Adjust space between icon and text */
+}
+
+
+

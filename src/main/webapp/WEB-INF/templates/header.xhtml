@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <!-- Topbar content from original file -->
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                <i class="pi pi-bars"></i>
+        </button>
+        <ul class="navbar-nav ml-auto d-flex justify-content-between w-100">
+            <!-- System title -->
+            <li class="nav-item">
+                <span class="navbar-brand fs-3 text-uppercase font-weight-bold text-primary">
+                    Transport Management System
+                </span>
+            </li>
+
+            <!-- Logout button -->
+            <li class="nav-item">
+                <h:form>
+                <p:commandButton value="Logout"
+                               action="#{login.logout}">
+                </p:commandButton>
+                    </h:form>
+            </li>
+        </ul>
+    </nav>
+</ui:composition>

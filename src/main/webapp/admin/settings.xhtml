@@ -1,0 +1,171 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/mainTemplate.xhtml">
+
+    <ui:define name="content">
+        <!-- Optional custom styles (if further tweaking is needed) -->
+        <style>
+            .ui-inputfield {
+                width: 100%;
+                padding: 0.75rem;
+                border-radius: 0.375rem; /* 6px */
+                border: 1px solid #dee2e6;
+            }
+            .ui-button {
+                color: #fff;
+                background-color: #3B82F6;
+                border: 1px solid #3B82F6;
+                padding: 0.75rem 1.25rem;
+                font-size: 1rem;
+                border-radius: 0.375rem;
+                cursor: pointer;
+                transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+            }
+            .ui-button:hover {
+                background-color: #2563EB;
+                border-color: #2563EB;
+            }
+            .ui-button.secondary {
+                background-color: #64748B;
+                border-color: #64748B;
+            }
+            .ui-button.secondary:hover {
+                background-color: #475569;
+                border-color: #475569;
+            }
+            /* Hide all sections by default except the account section */
+            .content-section {
+                display: none;
+            }
+            #accountSection {
+                display: block;
+            }
+        </style>
+
+        <div class="min-vh-100 d-flex flex-column position-relative flex-fill">
+            <div class="p-3 d-flex flex-column flex-fill">
+                <div class="row">
+                    <!-- Side Navigation -->
+                    <div class="col-md-3 col-lg-2 mb-4 mb-md-0 pe-md-3">
+                        <div class="card">
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-2">
+                                    <a href="#" onclick="showSection('accountSection'); return false;"
+                                       class="d-flex align-items-center text-decoration-none p-3 rounded text-dark fw-medium">
+                                        <i class="pi pi-user me-2"></i>
+                                        <span>Account</span>
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="#" onclick="showSection('securitySection'); return false;"
+                                       class="d-flex align-items-center text-decoration-none p-3 rounded text-secondary hover-bg-light transition">
+                                        <i class="pi pi-shield me-2"></i>
+                                        <span>Change Password</span>
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Main Content Sections -->
+                    <div class="col-md-9 col-lg-10">
+                        <!-- Account Settings Section -->
+                        <div id="accountSection" class="content-section">
+                            <div class="card p-4 mb-4">
+                                <h2 class="text-dark fw-semibold fs-4 mb-3">Account Settings</h2>
+                                <p class="text-muted mb-4">Manage your account information and preferences</p>
+                                
+                                <h:form id="accountForm">
+                                    <div class="row g-3">
+                                        <p:growl id="accountMessages" />
+                                        <div class="col-12 col-md-6">
+                                            <div class="mb-3">
+                                                <label for="firstName" class="form-label">First Name</label>
+                                                <h:inputText id="firstName" value="#{settings.currentUser.firstName}" styleClass="ui-inputfield form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="mb-3">
+                                                <label for="lastName" class="form-label">Last Name</label>
+                                                <h:inputText id="lastName" value="#{settings.currentUser.secondName}" styleClass="ui-inputfield form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">Email</label>
+                                                <h:inputText id="email" value="#{settings.currentUser.email}" styleClass="ui-inputfield form-control" />
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="col-12">
+                                            <div class="mb-3">
+                                                <label for="company" class="form-label">Company</label>
+                                                <h:inputText id="company" value="Royal Swift" styleClass="ui-inputfield form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="mb-3">
+                                                <label for="phone" class="form-label">Phone Number</label>
+                                                <h:inputText id="phone" value="#{settings.currentUser.phoneNumber}" styleClass="ui-inputfield form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="mb-3">
+                                                <label for="role" class="form-label">Role</label>
+                                                <h:outputText id="role" value="#{settings.currentUser.role}" styleClass="ui-inputfield form-control-plaintext" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-end">
+                                        <h:commandButton value="Save Changes" styleClass="ui-button btn btn-primary" />
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+
+                        <!-- Security Section (Password Change) -->
+                        <div id="securitySection" class="content-section">
+                            <div class="card p-4 mb-4">
+                                <h2 class="text-dark fw-semibold fs-4 mb-3">Security</h2>
+                                <p class="text-muted mb-4">Change your password to keep your account secure</p>
+                                
+                                <h:form id="securityForm">
+                                    <div class="row g-3">
+                                        <div class="col-12 col-md-6">
+                                            <div class="mb-3">
+                                                <label for="oldPassword" class="form-label">Current Password</label>
+                                                <h:inputText id="oldPassword" value="#{settings.oldPassword}" styleClass="ui-inputfield form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="mb-3">
+                                                <label for="newPassword" class="form-label">New Password</label>
+                                                <h:inputText id="newPassword" value="#{settings.newPassword}" styleClass="ui-inputfield form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="mb-3">
+                                                <label for="confirm" class="form-label">Confirm Password</label>
+                                                <h:inputText id="confirm" value="#{settings.confirmPassword}" styleClass="ui-inputfield form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <h:commandButton value="Change Password" styleClass="ui-button btn btn-primary" action="#{settings.updatePassword()}"/>
+                                        </div>
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+
+                        <!-- Notifications Section -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

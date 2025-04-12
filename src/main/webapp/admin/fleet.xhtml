@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/mainTemplate.xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 font-weight-bold text-gray-800">Fleet</h1>
+                
+            </div>
+
+            <h:form id="fleetForm">
+                <h:messages infoClass="alert alert-success" errorClass="alert alert-danger" />
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Fleet Table</h6>
+                        <p:linkButton styleClass="p-button p-button-primary text-decoration-none"  value ="New Vehicle" outcome="vehicleForm"/>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <p:dataTable id="fleetTable" value="#{fleetController}" var="vehicle"
+                                         paginator="true" lazy="true"
+                                         rows="10" paginatorPosition="bottom"
+                                         styleClass="table table-bordered">
+
+                                <p:column headerText="Plate Number">
+                                    <h:outputText value="#{vehicle.plateNumber}" />
+                                </p:column>
+
+                                <p:column headerText="Vehicle Model">
+                                    <h:outputText value="#{vehicle.vehicleModel}" />
+                                </p:column>
+
+                                <p:column headerText="Vehicle Type">
+                                    <h:outputText value="#{vehicle.vehicleType}" />
+                                </p:column>
+
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{vehicle.status}" />
+                                </p:column>
+
+                                <p:column headerText="Actions">
+                                    <div class="btn-group">
+                                        <p:commandButton value="Update" 
+                                                         styleClass="btn btn-info text-white" 
+                                                         action="#{fleetController.editVehicle(vehicle.plateNumber)}"/>
+                                        <p:commandButton value="Delete" 
+                                                         styleClass="btn btn-danger text-white" 
+                                                         action="#{fleetController.deleteVehicle(vehicle.plateNumber)}"
+                                                         update=":fleetForm" />
+                                    </div>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+            <h:form id="fleetEditForm">
+                <p:dialog header="Edit Vehicle Information" widgetVar="editDialog" modal="true" resizable="false" closable="true">
+                    <div class="card-body">
+                        <div class="form-group mb-3">
+                            <h:outputLabel for="plateNumber" value="Plate Number:" class="font-weight-bold" />
+                            <p:inputText id="plateNumber" value="#{fleetController.selectedVehicle.plateNumber}" disabled="true"
+                                         class="form-control" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <h:outputLabel for="model" value="Vehicle Model:" class="font-weight-bold" />
+                            <p:inputText id="model" value="#{fleetController.selectedVehicle.vehicleModel}"
+                                         class="form-control" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <h:outputLabel for="type" value="Vehicle Type:" class="font-weight-bold" />
+                            <p:inputText id="type" value="#{fleetController.selectedVehicle.vehicleType}"
+                                         class="form-control" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <h:outputLabel for="status" value="Status:" class="font-weight-bold" />
+                            <p:inputText id="status" value="#{fleetController.selectedVehicle.status}"
+                                         class="form-control" />
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <p:commandButton value="Save" action="#{fleetController.updateVehicle}"
+                                         update=":fleetEditForm :fleetForm"
+                                         oncomplete="PF('editDialog').hide();" class="btn btn-success" />
+                    </div>
+                </p:dialog>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

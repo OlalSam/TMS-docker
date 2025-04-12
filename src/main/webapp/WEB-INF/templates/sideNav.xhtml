@@ -1,0 +1,105 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+         <ui:fragment rendered="#{dashboardBean.userRole eq 'ADMIN'}">
+            <h:link class="sidebar-brand d-flex align-items-center justify-content-center" outcome="home.xhtml">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="pi pi-crown"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">TMS Admin</div>
+            </h:link>
+        </ui:fragment>
+        <ui:fragment rendered="#{dashboardBean.userRole eq 'USER'}">
+            <h:link class="sidebar-brand d-flex align-items-center justify-content-center" outcome="home.xhtml">
+                <div class="sidebar-brand-icon">
+                    <i class="pi pi-user"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">TMS User</div>
+            </h:link>
+        </ui:fragment>
+            
+        <ui:fragment rendered="#{dashboardBean.userRole eq 'ADMIN'}">
+            <li class="nav-item ">
+                <h:link class="nav-link" outcome="home">
+                    <i class="pi pi-home"></i>
+                    <span>Dashboard</span>
+                </h:link>
+            </li>
+            <hr class="sidebar-divider"/>
+            <li class="nav-item ">
+                <h:link class="nav-link" outcome="fleet">
+                    <i class="pi pi-car"></i>
+                    <span>Fleet management</span>
+                </h:link>
+            </li>
+            <hr class="sidebar-divider"/>
+
+          
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item ">
+                <h:link class="nav-link" outcome="employee">
+                    <i class="pi pi-users"></i>
+                    <span>Human Resource</span>
+                </h:link>
+            </li>
+            <hr class="sidebar-divider"/>
+            <li class="nav-item ">
+                <h:link class="nav-link" outcome="tracking">
+                    <i class="pi pi-globe"></i>
+                    <span>Geo-Location</span>
+                </h:link>
+            </li>
+            <hr class="sidebar-divider"/>
+            <li class="nav-item ">
+                <h:link class="nav-link" outcome="reports">
+                    <i class="pi pi-chart-bar"></i>
+                    <span>Reports</span>
+                </h:link>
+            </li>
+            <hr class="sidebar-divider"/>
+            <li class="nav-item ">
+            <h:link class="nav-link" outcome="settings">
+                <i class="pi pi-cog"></i>
+                <span>Settings</span>
+            </h:link>
+           </li>
+        </ui:fragment>
+            
+        <ui:fragment rendered="#{dashboardBean.userRole eq 'USER'}">
+            <li class="nav-item ">
+                <h:link class="nav-link" outcome="home">
+                    <i class="pi pi-home"></i>
+                    <span>Dashboard</span>
+                </h:link>
+            </li>
+            <hr class="sidebar-divider"/>
+
+           
+            <li class="nav-item ">
+                <h:link class="nav-link" outcome="tasks">
+                    <i class="pi pi-checklist"></i>
+                    <span>Tasks</span>
+                </h:link>
+            </li>
+            <hr class="sidebar-divider"/>
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item ">
+                <h:link class="nav-link" outcome="tracking">
+                    <i class="pi pi-globe"></i>
+                    <span>Map </span>
+                </h:link>
+            </li>
+            <hr class="sidebar-divider"/>
+            
+            <li class="nav-item ">
+                <h:link class="nav-link" outcome="settings">
+                    <i class="pi pi-cog"></i>
+                    <span>Settings</span>
+                </h:link>
+           </li>
+        </ui:fragment>
+        <!-- Rest of sidebar items -->
+    </ul>
+</ui:composition>

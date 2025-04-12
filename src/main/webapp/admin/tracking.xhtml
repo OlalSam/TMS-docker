@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:f="jakarta.faces.core"
+                template="/WEB-INF/templates/mainTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <style>
+            #map {
+                height: 70vh;
+                width: 100%;
+                z-index: 1;
+            }
+           
+        </style>
+        <div class="flex flex-row p-2">
+            <h1>Map</h1>
+        </div>
+
+        <h:form id="mapForm">
+            <div id="map" ></div>
+        </h:form>
+        
+        
+        
+    </ui:define>
+</ui:composition>

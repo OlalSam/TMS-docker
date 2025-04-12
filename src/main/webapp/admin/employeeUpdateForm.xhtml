@@ -1,0 +1,117 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/mainTemplate.xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="jakarta.faces.core">
+
+    <ui:define name="content">
+        <div class="container">
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">Update Employee</h1>
+                                </div>
+                                <h:form styleClass="user">
+                                    <!-- Username -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="username" value="Username" styleClass="form-label"/>
+                                        <h:inputText id="username"
+                                                     styleClass="form-control form-control-user"
+                                                     disabled="true"
+                                                     requiredMessage="Username is required"
+                                                     value="#{employeeController.selectedEmployee.username}">
+                                            <f:validator validatorId="employeeValidator"/>
+                                            <f:attribute name="fieldName" value="username"/>
+                                            <f:attribute name="employeeId" value="#{employeeController.selectedEmployee.userId}"/>
+                                        </h:inputText>
+                                        <h:message for="username" styleClass="text-danger small"/>
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="email" value="Email" styleClass="form-label"/>
+                                        <h:inputText id="email"
+                                                     styleClass="form-control form-control-user"
+                                                     required="true"
+                                                     requiredMessage="Email is required"
+                                                     value="#{employeeController.selectedEmployee.email}">
+                                            <f:validator validatorId="employeeValidator"/>
+                                            <f:attribute name="fieldName" value="email"/>
+                                            <f:attribute name="employeeId" value="#{employeeController.selectedEmployee.userId}"/>
+                                        </h:inputText>
+                                        <h:message for="email" styleClass="text-danger small"/>
+                                    </div>
+                                   
+
+                                    <!-- Phone Number -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="phoneNumber" value="Phone Number" styleClass="form-label"/>
+                                        <h:inputText id="phoneNumber"
+                                                     styleClass="form-control form-control-user"
+                                                     required="true"
+                                                       requiredMessage="Phone number is required"
+                                                     value="#{employeeController.selectedEmployee.phoneNumber}">
+                                            <f:validator validatorId="employeeValidator"/>
+                                            <f:attribute name="fieldName" value="phone_number"/>
+                                            <f:attribute name="employeeId" value="#{employeeController.selectedEmployee.userId}"/>
+                                        </h:inputText>
+                                        <h:message for="phoneNumber" styleClass="text-danger small"/>
+                                    </div>
+
+                                    <!-- First Name -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="firstName" value="First Name" styleClass="form-label"/>
+                                        <h:inputText id="firstName"
+                                                     styleClass="form-control form-control-user"
+                                                     required="true"
+                                                     requiredMessage="First name is required"
+                                                     value="#{employeeController.selectedEmployee.firstName}"/>
+                                        <h:message for="firstName" styleClass="text-danger small"/>
+                                    </div>
+
+                                    <!-- Second Name -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="secondName" value="Second Name" styleClass="form-label"/>
+                                        <h:inputText id="secondName"
+                                                     styleClass="form-control form-control-user"
+                                                     required="true"
+                                                     requiredMessage="Second name is required"
+                                                     value="#{employeeController.selectedEmployee.secondName}"/>
+                                        <h:message for="secondName" styleClass="text-danger small"/>
+                                    </div>
+
+                                    <!-- Status -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="status" value="Status" styleClass="form-label"/>
+                                        <h:selectOneMenu id="status"
+                                                         styleClass="form-select"
+                                                         value="#{employeeController.selectedEmployee.status}">
+                                            <f:selectItem itemLabel="Active" itemValue="ACTIVE"/>
+                                            <f:selectItem itemLabel="Inactive" itemValue="INACTIVE"/>
+                                        </h:selectOneMenu>
+                                        <h:message for="status" styleClass="text-danger small"/>
+                                    </div>
+
+                                    <!-- Register Button -->
+                                    <h:commandButton styleClass="btn btn-primary btn-user btn-block"
+                                                     value="Update Employee"
+                                                     action="#{employeeController.updateEmployee()}"/>
+
+                                    <hr/>
+                                    <div class="text-center">
+                                        <h:link outcome="employee" styleClass="small" value=" Cancel "/>
+                                    </div>
+                                </h:form>
+                                <hr/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

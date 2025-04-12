@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+<h:head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+    <title><ui:insert name="title">TMS</ui:insert></title>
+
+    <!-- Custom fonts -->
+    <h:outputStylesheet library="fontawesome-free" name="css/all.min.css" />
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet" />
+
+    <!-- Custom styles -->
+    <h:outputStylesheet library="css" name="main.css" />
+    <h:outputStylesheet library="css" name="custom.css" />
+    <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+    
+    <ui:insert name="head" />
+</h:head>
+
+<h:body id="page-top">
+    <div id="wrapper">
+        <ui:include src="/WEB-INF/templates/sideNav.xhtml" />
+        
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <ui:include src="/WEB-INF/templates/header.xhtml" />
+                
+                <ui:insert name="content" class="h-100" />
+                
+                <ui:include src="/WEB-INF/templates/footer.xhtml" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="pi pi-chevron-up"></i>
+    </a>
+
+
+    <!-- Scripts -->
+    <script src="#{resource['js/jquery.min.js']}"/>
+    <script src="#{resource['js/bootstrap.bundle.min.js']}"/>
+    <script src="#{resource['js/main.js']}"/>
+    <script src="#{resource['js/sb-admin-2.min.js']}"/>
+    <script src="#{resource['js/jquery.easing.min.js']}"/>
+    
+</h:body>
+</html>
