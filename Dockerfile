@@ -14,7 +14,7 @@ RUN mvn -B clean package
 FROM payara/server-full:6.2025.4-jdk21
 
 # Set environment variables
-ENV CONFIG_DIR=/opt/payara/appserver/glassfish/config
+ENV CONFIG_DIR=/opt/payara/config
 ENV DEPLOY_DIR=/opt/payara/appserver/glassfish/domains/domain1/autodeploy
 
 
