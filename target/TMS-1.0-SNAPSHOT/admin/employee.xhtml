@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/mainTemplate.xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 font-weight-bold text-gray-800">Human Resource</h1>
+            </div>
+            <h:form id="employeeForm">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Employee Table</h6>
+                        <p:linkButton styleClass="p-button p-button-primary "  value ="New Employee" outcome="employeeForm"  />
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <p:dataTable id="employeeTable" value="#{employeeController}" var="employee"
+                                         paginator="true" lazy="true"
+                                         rows="10" paginatorPosition="bottom"
+                                         styleClass="table table-bordered">
+
+                                <p:column headerText="Username">
+                                    <h:outputText value="#{employee.username}" />
+                                </p:column>
+
+                                <p:column headerText="First Name">
+                                    <h:outputText value="#{employee.firstName}" />
+                                </p:column>
+
+                                <p:column headerText="Last Name">
+                                    <h:outputText value="#{employee.secondName}" />
+                                </p:column>
+
+                                <p:column headerText="Email">
+                                    <h:outputText value="#{employee.email}" />
+                                </p:column>
+                                
+                                <p:column headerText="Phone Number">
+                                    <h:outputText value="#{employee.phoneNumber}" />
+                                </p:column>
+
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{employee.status}" />
+                                </p:column>
+
+                                <p:column headerText="Actions">
+                                    <div class="btn-group ">
+                                        <p:commandButton value="Update" 
+                                                         styleClass="btn btn-info text-white" 
+                                                         action="#{employeeController.editEmployee(employee.userId)}"/>
+                                        <p:commandButton value="Delete" 
+                                                         styleClass="btn btn-danger text-white" 
+                                                         action="#{employeeController.deleteEmployee(employee.userId)}"
+                                                         update=":employeeForm" />
+                                    </div>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+                <h:form id="employeeEditForm">
+                <p:dialog header="Edit Employee Information" widgetVar="editDialog" modal="true" resizable="false" closable="true">
+                    <div class="card-body">
+                        <div class="form-group mb-3">
+                            <h:outputLabel for="employeeId" value="Employee ID:" class="font-weight-bold" />
+                            <p:inputText id="employeeId" value="#{employeeController.selectedEmployee.userId}" disabled="true"  class="form-control" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <h:outputLabel for="firstName" value="First Name:" class="font-weight-bold" />
+                            <p:inputText id="firstName" value="#{employeeController.selectedEmployee.firstName}"
+                                         class="form-control" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <h:outputLabel for="lastName" value="Last Name:" class="font-weight-bold" />
+                            <p:inputText id="lastName" value="#{employeeController.selectedEmployee.secondName}"
+                                         class="form-control" />
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <h:outputLabel for="status" value="Status:" class="font-weight-bold" />
+                            <p:inputText id="status" value="#{employeeController.selectedEmployee.status}"
+                                         class="form-control" />
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <p:commandButton value="Save" action="#{employeeController.updateEmployee}"
+                                         update=":employeeEditForm :employeeForm"
+                                         oncomplete="PF('editDialog').hide();" class="btn btn-success" />
+                    </div>
+                </p:dialog>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

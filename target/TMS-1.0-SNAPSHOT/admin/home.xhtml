@@ -1,0 +1,199 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                template="/WEB-INF/templates/mainTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">TMS | Dashboard</ui:define>
+
+    <ui:define name="content">
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet" />
+
+        <style>
+            #map, #chart, #piechart {
+                height: 70vh;
+                width: 100%;
+                z-index: 1;
+            }
+        </style>
+        
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+            </a>
+        </div>
+
+        <!-- Content Row -->
+        <div class="row">
+            <!-- Earnings Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center px-3">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Employees
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">#{dashboardBean.totalEmployees}</div>
+                            </div>
+                            <div class="col-auto">
+                                <em class="fas fa-users fa-2x"></em>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center px-3">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Active Employees
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">#{dashboardBean.activeEmployees}</div>
+                            </div>
+                            <div class="col-auto">
+                                <em class="fas fa-user fa-2x "></em>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 ">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center px-3">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-waring text-uppercase mb-1">
+                                    Total Vehicles
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">#{dashboardBean.totalVehicles}</div>
+                            </div>
+                            <div class="col-auto">
+                                <em class="fas fa-truck fa-2x text-gray-900"></em>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center px-3">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Complete Tasks
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">#{dashboardBean.completeTask}</div>
+                            </div>
+                            <div class="col-auto">
+                                <em class="fas fa-clipboard-list fa-2x"></em>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Cards (similar structure) -->
+            <!-- ... -->
+
+        </div>
+
+        <!-- Charts Section -->
+         <div class="row">
+            <!-- Bar Chart -->
+            <div class="col-xl-6 col-12 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Vehile Distribution</h6>
+                    </div>
+                    <div class="card-body">
+                        <p:growl id="growl" />
+                        <p:chart id="chart" value="#{dashboardBean.barChartJson}" 
+                                widgetVar="vehicleChart">
+                            
+                        </p:chart>  
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Visualization -->
+            <div class="col-xl-6 col-12 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Geo-Location</h6>
+                    </div>
+                        
+                    <div class="card-body p-0 h-100">
+                        <h:form id="mapForm">
+                            <div id="map" ></div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Bar Chart -->
+            <div class="col-12 mb-4">
+                <div class="card shadow h-100">
+                   <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tasks</h6>
+                    </div>
+                    <div class="card-body p-0">
+                        
+                    </div> 
+                </div>
+            </div>
+            <div class="col-12 mb-4">
+                <div class="card shadow h-100">
+                   <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tasks Chart</h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <p:chart id="piechart" value="#{dashboardBean.taskChartJson}" 
+                                widgetVar="vehicleChart">
+                            
+                        </p:chart>  
+                    </div> 
+                </div>
+                 <div class="modal fade" id="driverInfoModal" tabindex="-1" aria-labelledby="driverInfoLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="driverInfoLabel">Driver Details</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <dl class="row mb-0">
+                            <dt class="col-sm-4">Username</dt>
+                            <dd class="col-sm-8" id="modal-username">–</dd>
+                            <dt class="col-sm-4">Email</dt>
+                            <dd class="col-sm-8" id="modal-email">–</dd>
+                            <dt class="col-sm-4">Phone Number</dt>
+                            <dd class="col-sm-8" id="modal-phone">–</dd>
+
+                          </dl>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button"
+                                  class="btn btn-secondary"
+                                  data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <h:outputScript>
+                var markerImageUrl = "#{resource['images/marker.png']}";
+            </h:outputScript>
+        </div>
+    <script   src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js" ></script>
+    <h:outputScript library="leaflet" name="leaflet.js"/>
+    <h:outputScript library="js" name="map.js"/>
+    <h:outputScript library="js" name="turf.min.js"/>        
+    </ui:define>
+</ui:composition>

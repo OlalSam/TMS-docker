@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:f="jakarta.faces.core"
+                template="/WEB-INF/templates/mainTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <style>
+            #mapEmployee, #chart {
+                height: 50vh;
+                width: 100%;
+                z-index: 1;
+            }
+
+        </style>
+        <h:outputScript>
+            window.driverUsername = "#{dashboardBean.username}";
+            console.log("Driver username:", window.driverUsername);
+        </h:outputScript>
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet" />
+        
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Employee Dashboard</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-download fa-sm text-white-50"></i> Start Task
+            </a>
+        </div>
+         <div class="row">
+            <!-- Bar Chart -->
+            <div class="col-xl-6 col-12 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Vehile Distribution</h6>
+                    </div>
+                    <div class="card-body">
+                        <p:growl id="growl" />
+                        <p:chart id="chart" value="#{dashboardBean.barChartJson}" 
+                                style="width: 100%; height: 400px;"
+                                widgetVar="vehicleChart">
+                            
+                        </p:chart>  
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Visualization -->
+            <div class="col-xl-6 col-12 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Map</h6>
+                    </div>
+                        
+                    <div class="card-body p-0 h-100">
+                        <h:form id="mapForm">
+                            <div id="mapEmployee" ></div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Bar Chart -->
+            <div class="col-12 mb-4">
+                <div class="card shadow h-100">
+                   <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tasks</h6>
+                    </div>
+                    <div class="card-body p-0">
+                        
+                        <h:form>
+                        <p:dataTable id="taskTable" var="task" value="#{taskController.userTasks}" 
+                                         paginator="true" rows="10"  >
+
+                                <p:column headerText="Title">
+                                    <h:outputText value="#{task.title}" />
+                                </p:column>
+
+                                <p:column headerText="Notes">
+                                    <h:outputText value="#{task.notes}" />
+                                </p:column>
+
+                                <p:column headerText="Pickup Location">
+                                    <h:outputText value="#{task.pickupDesination}" />
+                                </p:column>
+
+                                <p:column headerText="Destination Location">
+                                    <h:outputText value="#{task.destinationLocation}" />
+                                </p:column>
+
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{task.status}" />
+                                </p:column>
+
+                                <p:column headerText="Actions">
+                                    <p:commandButton value="Start" action="#{taskController.startTask(task.id)}" 
+                                                     update="taskTable messages" 
+                                                     rendered="#{task.status eq 'PENDING'}" 
+                                                     styleClass="ui-button-success" />
+
+                                    <p:commandButton value="Complete" action="#{taskController.completeTask(task.id)}" 
+                                                     update="taskTable messages" 
+                                                     rendered="#{task.status eq 'IN_PROGRESS'}" 
+                                                     styleClass="ui-button-primary" />
+                                </p:column>
+
+                            </p:dataTable>
+                            </h:form>
+                    </div> 
+                </div>
+                <div class="modal fade" id="driverInfoModal" tabindex="-1" aria-labelledby="driverInfoLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="driverInfoLabel">Driver Details</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <dl class="row mb-0">
+                            <dt class="col-sm-4">Username</dt>
+                            <dd class="col-sm-8" id="modal-username">–</dd>
+                            <dt class="col-sm-4">Email</dt>
+                            <dd class="col-sm-8" id="modal-email">–</dd>
+                            <dt class="col-sm-4">Phone Number</dt>
+                            <dd class="col-sm-8" id="modal-phone">–</dd>
+
+                          </dl>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button"
+                                  class="btn btn-secondary"
+                                  data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h:outputScript>
+                var markerImageUrl = "#{resource['images/blue.png']}";
+        </h:outputScript>
+        <script   src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js" ></script>
+        <h:outputScript library="leaflet" name="leaflet.js"/>
+        <h:outputScript library="js" name="mapEmployee.js"/>
+        <h:outputScript library="js" name="turf.min.js"/> 
+    </ui:define>
+</ui:composition>

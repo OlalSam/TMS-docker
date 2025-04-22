@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+    <context-param>
+        <param-name>jakarta.faces.PROJECT_STAGE</param-name>
+        <param-value>Development</param-value> 
+    </context-param>
+    <context-param>
+        <param-name>jakarta.faces.AUTOMATIC_EXTENSIONLESS_MAPPING</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+        <cookie-config>
+            <http-only>true</http-only> <!-- Prevent client side scripting from accessing/manipulating session cookie. -->
+        </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+    
+    <welcome-file-list>
+        <welcome-file>login</welcome-file> <!-- Eclipse may warn that this file cannot be found, but we actually use extensionless mapping. -->
+    </welcome-file-list>
+    
+    <error-page>
+        <error-code>400</error-code>
+        <location>/WEB-INF/errorpages/400.xhtml</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/errorpages/404.xhtml</location> <!-- We don't want to leak restricted pages, so 404 instead of 403. -->
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/errorpages/404.xhtml</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/errorpages/500.xhtml</location>
+    </error-page>
+    <error-page>
+        <exception-type>jakarta.faces.application.ViewExpiredException</exception-type>
+        <location>/WEB-INF/errorpages/expired.xhtml</location>
+    </error-page>
+    <data-source>
+        <name> java:global/tms</name>
+        <class-name> org.postgresql.ds.PGSimpleDataSource</class-name>
+        <database-name> tms</database-name>
+        <user>olal</user>
+        <password>$@m01011001</password>
+        <max-pool-size>40</max-pool-size>
+        <min-pool-size>8</min-pool-size>
+    </data-source>
+    <!-- Allow access to error pages without authentication -->
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>User pages</web-resource-name>
+            <url-pattern>/user/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>USER</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Admin pages</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>ADMIN</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Websocket</web-resource-name>
+            <url-pattern>/tracking/</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>ADMIN</role-name>
+            <role-name>USER</role-name>
+        </auth-constraint>
+        
+    </security-constraint>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>API</web-resource-name>
+            <url-pattern>/api/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>ADMIN</role-name>
+            <role-name>USER</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Public API</web-resource-name>
+            <url-pattern>/api/profile/*</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
+        
+    <security-role>
+        <role-name>USER</role-name>
+    </security-role>
+        
+    <security-role>
+        <role-name>ADMIN</role-name>
+    </security-role>
+    
+    <mime-mapping>
+        <extension>otf</extension>
+        <mime-type>font/otf</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>ttf</extension>
+        <mime-type>application/x-font-ttf</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>woff</extension>
+        <mime-type>font/woff</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>woff2</extension>
+        <mime-type>font/woff2</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>eot</extension>
+        <mime-type>application/vnd.ms-fontobject</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>svg</extension>
+        <mime-type>image/svg+xml</mime-type>
+    </mime-mapping>
+
+
+
+</web-app>

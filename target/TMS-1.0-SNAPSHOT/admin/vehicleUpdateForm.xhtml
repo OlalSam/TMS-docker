@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/mainTemplate.xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="jakarta.faces.core">
+
+    <ui:define name="content">
+        <div class="container">
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">Update Vehicle</h1>
+                                </div>
+                                <h:form styleClass="user">
+                                    <!-- Plate Number -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="plateNumber" value="Plate Number" styleClass="form-label"/>
+                                        <h:inputText id="plateNumber"
+                                                     styleClass="form-control form-control-user"
+                                                     required="true"
+                                                     requiredMessage="Plate number is required"
+                                                     value="#{fleetController.selectedVehicle.plateNumber}">
+                                            <f:validator validatorId="fleetValidator"/>
+                                            <f:attribute name="fieldName" value="plate_number"/>
+                                            <f:attribute name="vehicleId" value="#{fleetController.selectedVehicle.id}"/>
+                                        </h:inputText>
+                                        <h:message for="plateNumber" styleClass="text-danger small"/>
+                                    </div>
+
+                                    <!-- Vehicle Model -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="vehicleModel" value="Vehicle Model" styleClass="form-label"/>
+                                        <h:inputText id="vehicleModel"
+                                                     styleClass="form-control form-control-user"
+                                                     required="true"
+                                                     requiredMessage="Vehicle model is required"
+                                                     value="#{fleetController.selectedVehicle.vehicleModel}"/>
+                                        <h:message for="vehicleModel" styleClass="text-danger small"/>
+                                    </div>
+
+                                    <!-- Vehicle Type -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="vehicleType" value="Vehicle Type" styleClass="form-label"/>
+                                        <h:inputText id="vehicleType"
+                                                     styleClass="form-control form-control-user"
+                                                     required="true"
+                                                     requiredMessage="Vehicle type is required"
+                                                     value="#{fleetController.selectedVehicle.vehicleType}">
+                                            <f:validator validatorId="fleetValidator"/>
+                                        </h:inputText>
+                                        <h:message for="vehicleType" styleClass="text-danger small"/>
+                                    </div>
+                                    <!-- Status -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="status" value="Status" styleClass="form-label"/>
+                                        <h:selectOneMenu id="status"
+                                                         styleClass="form-select"
+                                                         value="#{fleetController.selectedVehicle.status}">
+                                            <f:selectItem itemLabel="Active" itemValue="Active"/>
+                                            <f:selectItem itemLabel="Inactive" itemValue="Inactive"/>
+                                            <f:selectItem itemLabel="Maintenance" itemValue="Maintenance"/>
+                                        </h:selectOneMenu>
+                                        <h:message for="status" styleClass="text-danger small"/>
+                                    </div>
+
+                                    <!-- Register Button -->
+                                    <h:commandButton styleClass="btn btn-primary btn-user btn-block"
+                                                     value="Update Vehicle"
+                                                     action="#{fleetController.updateVehicle()}"/>
+
+                                    <hr/>
+
+                                    <!-- Back to Dashboard Link -->
+                                    <div class="text-center">
+                                        <h:link outcome="home" styleClass="small" value="Back to Dashboard"/>
+                                    </div>
+                                </h:form>
+                                <hr/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
