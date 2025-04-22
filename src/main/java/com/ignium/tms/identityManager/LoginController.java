@@ -28,7 +28,6 @@ public class LoginController {
 
     private String username;
     private String password;
-    
 
     @Inject
     private SecurityContext securityContext;
@@ -71,8 +70,8 @@ public class LoginController {
                     } else if (securityContext.isCallerInRole("USER")) {
                         String dashboard = getExternalContext().getRequestContextPath() + "/user/home";
                         getExternalContext().redirect(dashboard);
-                    }else{
-                        
+                    } else {
+
                     }
 
                 } catch (IOException ex) {
@@ -106,5 +105,10 @@ public class LoginController {
         } catch (IOException e) {
             System.err.println("Error during logout: " + e.getMessage());
         }
+    }
+
+    public String logoutAndRedirect() {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "login?faces-redirect=true";
     }
 }

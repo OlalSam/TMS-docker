@@ -1,0 +1,91 @@
+<!-- src/main/webapp/taskManagement.xhtml -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/mainTemplate.xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="jakarta.faces.core">
+
+    <ui:define name="content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 font-weight-bold text-gray-800">Task Management</h1>
+                <p:linkButton styleClass="p-button p-button-primary text-decoration-none"
+                              value="New Task"
+                              outcome="taskForm"/>
+            </div>
+
+            <h:form id="taskForm">
+                <h:messages infoClass="alert alert-success" errorClass="alert alert-danger" />
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tasks Table</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <p:dataTable id="taskTable"
+                                         value="#{taskController.taskList}"
+                                         var="task"
+                                         paginator="true"
+                                         rows="10"
+                                         paginatorPosition="bottom"
+                                         styleClass="table table-bordered">
+
+                                <p:column headerText="ID" style="width:50px">
+                                    <h:outputText value="#{task.id}" />
+                                </p:column>
+
+                                <p:column headerText="Driver">
+                                    <h:outputText value="#{task.driverName}" />
+                                </p:column>
+
+                                <p:column headerText="Plate No">
+                                    <h:outputText value="#{task.numberPlate}" />
+                                </p:column>
+
+                                <p:column headerText="Title">
+                                    <h:outputText value="#{task.title}" />
+                                </p:column>
+
+                                <p:column headerText="Notes">
+                                    <h:outputText value="#{task.notes}" />
+                                </p:column>
+
+                                <p:column headerText="Pickup">
+                                    <h:outputText value="#{task.pickupDesination}" />
+                                </p:column>
+
+                                <p:column headerText="Destination">
+                                    <h:outputText value="#{task.destinationLocation}" />
+                                </p:column>
+
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{task.status}" />
+                                </p:column>
+
+                                <p:column headerText="Actions" style="width:150px">
+                                    <div class="btn-group">
+                                        <p:commandButton icon="pi pi-pencil"
+                                                         title="Edit"
+                                                         styleClass="btn btn-info btn-sm text-white"
+                                                         action="#{taskController.editTask(task.id)}"
+                                                         update=":taskForm:taskTable, :taskForm:growl"/>
+                                        <p:commandButton icon="pi pi-trash"
+                                                         title="Delete"
+                                                         styleClass="btn btn-danger btn-sm text-white"
+                                                         actionListener="#{taskController.deleteTask(task.id)}"
+                                                         update=":taskForm:taskTable, :taskForm:growl"/>
+                                    </div>
+                                </p:column>
+
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </div>
+
+                <p:growl id="growl" showDetail="true" life="3000"/>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

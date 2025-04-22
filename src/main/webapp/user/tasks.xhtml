@@ -20,7 +20,46 @@
                         <h6 class="m-0 font-weight-bold text-primary">Tasks</h6>
                     </div>
                     <div class="card-body p-0">
-                        
+                         <h:form id="taskForm">
+                            <p:messages id="messages" closable="true" />
+
+                            <p:dataTable id="taskTable" var="task" value="#{taskController.userTasks}" 
+                                         paginator="true" rows="10"  >
+
+                                <p:column headerText="Title">
+                                    <h:outputText value="#{task.title}" />
+                                </p:column>
+
+                                <p:column headerText="Notes">
+                                    <h:outputText value="#{task.notes}" />
+                                </p:column>
+
+                                <p:column headerText="Pickup Location">
+                                    <h:outputText value="#{task.pickupDesination}" />
+                                </p:column>
+
+                                <p:column headerText="Destination Location">
+                                    <h:outputText value="#{task.destinationLocation}" />
+                                </p:column>
+
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{task.status}" />
+                                </p:column>
+
+                                <p:column headerText="Actions">
+                                    <p:commandButton value="Start" action="#{taskController.startTask(task.id)}" 
+                                                     update="taskTable messages" 
+                                                     rendered="#{task.status eq 'PENDING'}" 
+                                                     styleClass="ui-button-success" />
+
+                                    <p:commandButton value="Complete" action="#{taskController.completeTask(task.id)}" 
+                                                     update="taskTable messages" 
+                                                     rendered="#{task.status eq 'IN_PROGRESS'}" 
+                                                     styleClass="ui-button-primary" />
+                                </p:column>
+
+                            </p:dataTable>
+                        </h:form>
                     </div> 
                 </div>
             </div>

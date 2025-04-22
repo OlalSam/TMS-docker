@@ -1,0 +1,17 @@
+# Create JDBC pool
+create-jdbc-connection-pool \
+  --datasourceclassname org.postgresql.ds.PGSimpleDataSource \
+  --restype javax.sql.DataSource \
+  --property portNumber=5432:\
+user=${DB_USER}:password=${DB_PASSWORD}:\
+databaseName=${DB_NAME}:serverName=tms-postgres \
+  TMSConnectionPool
+
+# Create JNDI resource
+create-jdbc-resource \
+  --connectionpoolid TMSConnectionPool \
+  java:global/tms
+
+# Disable log rotation
+set-log-attributes \
+  com.sun.enterprise.server.logging.GFFileHandler.rotationLimitInBytes=0

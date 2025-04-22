@@ -1,0 +1,128 @@
+<!-- src/main/webapp/taskForm.xhtml -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/mainTemplate.xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="jakarta.faces.core">
+
+    <ui:define name="content">
+        <div class="container">
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">Create New Task</h1>
+                                </div>
+                                <h:form styleClass="user">
+                                    <!-- Driver dropdown -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="driver" value="Select Driver" styleClass="form-label"/>
+                                        <h:selectOneMenu id="driver"
+                                                         styleClass="form-control form-control-user"
+                                                         value="#{taskController.newTask.userId}"
+                                                         required="true"
+                                                         requiredMessage="Driver is required">
+                                            <f:selectItem itemLabel="-- Choose Driver --" itemValue="" noSelectionOption="true"/>
+                                            <f:selectItems value="#{taskController.driversAvailable}"
+                                                           var="emp"
+                                                           itemValue="#{emp.userId}"
+                                                           itemLabel="#{emp.username}"/>
+                                        </h:selectOneMenu>
+                                        <h:message for="driver" styleClass="text-danger small"/>
+                                    </div>
+
+                                    <!-- Vehicle dropdown -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="vehicle" value="Select Vehicle" styleClass="form-label"/>
+                                        <h:selectOneMenu id="vehicle"
+                                                         styleClass="form-control form-control-user"
+                                                         value="#{taskController.newTask.vehicleId}"
+                                                         required="true"
+                                                         requiredMessage="Vehicle is required">
+                                            <f:selectItem itemLabel="-- Choose Vehicle --" itemValue="" noSelectionOption="true"/>
+                                            <f:selectItems value="#{taskController.vehicles}"
+                                                           var="veh"
+                                                           itemValue="#{veh.id}"
+                                                           itemLabel="#{veh.plateNumber} (#{veh.vehicleType})"/>
+                                        </h:selectOneMenu>
+                                        <h:message for="vehicle" styleClass="text-danger small"/>
+                                    </div>
+
+                                    <!-- Title -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="title" value="Title" styleClass="form-label"/>
+                                        <h:inputText id="title"
+                                                     styleClass="form-control form-control-user"
+                                                     required="true"
+                                                     requiredMessage="Title is required"
+                                                     value="#{taskController.newTask.title}"/>
+                                        <h:message for="title" styleClass="text-danger small"/>
+                                    </div>
+
+                                    <!-- Notes -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="notes" value="Notes" styleClass="form-label"/>
+                                        <h:inputTextarea id="notes"
+                                                         styleClass="form-control form-control-user"
+                                                         rows="3"
+                                                         value="#{taskController.newTask.notes}"/>
+                                        <h:message for="notes" styleClass="text-danger small"/>
+                                    </div>
+
+                                    <!-- Pickup Location -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="pickup" value="Pickup Location" styleClass="form-label"/>
+                                        <h:inputText id="pickup"
+                                                     styleClass="form-control form-control-user"
+                                                     required="true"
+                                                     requiredMessage="Pickup location is required"
+                                                     value="#{taskController.newTask.pickupDesination}"/>
+                                        <h:message for="pickup" styleClass="text-danger small"/>
+                                    </div>
+
+                                    <!-- Destination Location -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="destination" value="Destination Location" styleClass="form-label"/>
+                                        <h:inputText id="destination"
+                                                     styleClass="form-control form-control-user"
+                                                     required="true"
+                                                     requiredMessage="Destination location is required"
+                                                     value="#{taskController.newTask.destinationLocation}"/>
+                                        <h:message for="destination" styleClass="text-danger small"/>
+                                    </div>
+
+                                    <!-- Status -->
+                                    <div class="form-group">
+                                        <h:outputLabel for="status" value="Status" styleClass="form-label"/>
+                                        <h:selectOneMenu id="status"
+                                                         styleClass="form-select form-control-user"
+                                                         value="#{taskController.newTask.status}">
+                                            <f:selectItem itemLabel="Pending" itemValue="PENDING"/>
+                                            <f:selectItem itemLabel="In-Transit" itemValue="IN_PROGRESS"/>
+                                            <f:selectItem itemLabel="Completed" itemValue="COMPLETED"/>
+                                        </h:selectOneMenu>
+                                        <h:message for="status" styleClass="text-danger small"/>
+                                    </div>
+
+                                    <!-- Create Button -->
+                                    <h:commandButton styleClass="btn btn-primary btn-user btn-block"
+                                                     value="Create Task"
+                                                     action="#{taskController.addTask()}"/>
+
+                                    <hr/>
+                                    <div class="text-center">
+                                        <h:link outcome="taskManagement" styleClass="small" value="Cancel"/>
+                                    </div>
+                                </h:form>
+                                <hr/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

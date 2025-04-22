@@ -185,4 +185,102 @@ public class EmployeeDao implements EmployeeDaoApi, Serializable {
         return kpi;
     }
 
+    public Employee getUserByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+        Employee employee = null;
+
+        try (var conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    employee = new Employee(
+                            rs.getInt("id"),
+                            rs.getString("username"),
+                            rs.getString("first_name"),
+                            rs.getString("second_name"),
+                            rs.getString("password"),
+                            rs.getString("email"),
+                            rs.getString("phone_number"),
+                            rs.getString("status"),
+                            Role.valueOf(rs.getString("role"))
+                    );
+                }
+            }
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "Error retrieving employee by ID", ex);
+        }
+
+        return employee;
+    }
+
+    public Employee findByUsername(String username) {
+        String sql = "SELECT * FROM users WHERE username = ?";
+        Employee employee = null;
+
+        try (var conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    employee = new Employee(
+                            rs.getInt("id"),
+                            rs.getString("username"),
+                            rs.getString("first_name"),
+                            rs.getString("second_name"),
+                            rs.getString("email"),
+                            rs.getString("phone_number"),
+                            rs.getString("status"),
+                            Role.valueOf(rs.getString("role"))
+                    );
+                }
+            }
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "Error retrieving employee by ID", ex);
+        }
+
+        return employee;
+    }
+
+    public Employee findAdmin() {
+        String sql = """
+        SELECT
+          id,
+          username,
+          first_name,
+          second_name,
+          email,
+          phone_number,
+          status,
+          role
+        FROM users
+        WHERE role = ?
+        LIMIT 1
+        """;
+        Employee admin = null;
+
+        try (var conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            // bind the ADMIN role name safely
+            ps.setString(1, Role.ADMIN.name());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    admin = new Employee(
+                            rs.getInt("id"),
+                            rs.getString("username"),
+                            rs.getString("first_name"),
+                            rs.getString("second_name"),
+                            rs.getString("email"),
+                            rs.getString("phone_number"),
+                            rs.getString("status"),
+                            Role.valueOf(rs.getString("role"))
+                    );
+                }
+            }
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "Error retrieving admin user", ex);
+        }
+
+        return admin;
+    }
+
 }

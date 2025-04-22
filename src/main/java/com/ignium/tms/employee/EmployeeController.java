@@ -32,7 +32,7 @@ public class EmployeeController extends LazyDataModel<Employee> implements Seria
     private Flash flash;
 
     @Inject
-    private SecurityContext securityContext;
+    private SecurityContext securityContext;    
 
     private Employee newEmployee;
     private Employee selectedEmployee;

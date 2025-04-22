@@ -27,8 +27,24 @@
     </welcome-file-list>
     
     <error-page>
+        <error-code>400</error-code>
+        <location>/WEB-INF/errorpages/400.xhtml</location>
+    </error-page>
+    <error-page>
         <error-code>403</error-code>
-        <location>/error/403</location>
+        <location>/WEB-INF/errorpages/404.xhtml</location> <!-- We don't want to leak restricted pages, so 404 instead of 403. -->
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/errorpages/404.xhtml</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/errorpages/500.xhtml</location>
+    </error-page>
+    <error-page>
+        <exception-type>jakarta.faces.application.ViewExpiredException</exception-type>
+        <location>/WEB-INF/errorpages/expired.xhtml</location>
     </error-page>
     <data-source>
         <name> java:global/tms</name>
@@ -75,7 +91,7 @@
     
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Map API</web-resource-name>
+            <web-resource-name>API</web-resource-name>
             <url-pattern>/api/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
@@ -86,7 +102,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Public API</web-resource-name>
-            <url-pattern>/api/mapController/*</url-pattern>
+            <url-pattern>/api/profile/*</url-pattern>
         </web-resource-collection>
     </security-constraint>
         

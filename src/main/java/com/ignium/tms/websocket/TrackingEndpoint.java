@@ -6,6 +6,7 @@ package com.ignium.tms.websocket;
 
 import com.ignium.tms.MessageUtility;
 import com.ignium.tms.LocationUpdate;
+import jakarta.inject.Inject;
 import jakarta.websocket.CloseReason;
 import jakarta.websocket.EndpointConfig;
 import jakarta.websocket.OnClose;
@@ -36,7 +37,8 @@ public class TrackingEndpoint {
     private static final Set<Session> adminSessions
             = Collections.synchronizedSet(new HashSet<>());
 
-   
+   @Inject
+   private LocationDaoApi locationService;
 
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
@@ -75,9 +77,10 @@ public class TrackingEndpoint {
 
         LocationUpdate update = MessageUtility.jsonToLocation(message);
         System.out.println(update);
-        update.setDriverId(username);
+        update.setDriverUsername(username);
 
         // JDBC logging
+        locationService.logLocation(update);
         // Broadcast to admins
         String adminMessage = MessageUtility.locationToJson(update);
         broadcastToAdmins(adminMessage);

@@ -4,14 +4,20 @@
  */
 package com.ignium.tms.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ignium.tms.employee.EmployeeDao;
 import com.ignium.tms.fleet.FleetDao;
+import com.ignium.tms.taskmanagement.TaskDaoApi;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.security.enterprise.SecurityContext;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -23,13 +29,17 @@ public class DashboardController {
 
     @Inject
     private EmployeeDao employeeService;
-    
-    @Inject 
+
+    @Inject
     private SecurityContext securityContext;
 
     @Inject
     private FleetDao fleetService;
+
+    @Inject
+    private TaskDaoApi taskService;
     
+
     private String userRole;
 
     private String barChartJson;
@@ -46,9 +56,23 @@ public class DashboardController {
 
     HashMap<String, Integer> fleetKpi;
 
+    Map<String, Integer> taskKpi;
+
+    private int totalTasks;
+
+    private String taskChartJson;
+    
+    private String username;
+
+    public String getUsername() {
+        username = securityContext.getCallerPrincipal().getName();
+        return username;
+    }
+    
+
     @PostConstruct
     public void init() {
-        
+
         userRole = securityContext.isCallerInRole("ADMIN") ? "ADMIN" : "USER";
 
         employeeKpi = new HashMap<>();
@@ -56,6 +80,15 @@ public class DashboardController {
 
         activeEmployees = employeeKpi.get("activeEmployees");
         totalEmployees = employeeKpi.get("totalEmployees");
+
+        taskKpi = taskService.taskKpi();
+        totalTasks = taskKpi.values().stream().mapToInt(Integer::intValue).sum();
+
+        List<String> statuses = new ArrayList<>(taskKpi.keySet());
+        List<Integer> counts = statuses.stream()
+                .map(taskKpi::get)
+                .toList();
+        completeTask = taskKpi.getOrDefault("COMPLETED", 0);
 
         fleetKpi = new HashMap<>();
         fleetKpi = fleetService.fleetKpi();
@@ -66,8 +99,7 @@ public class DashboardController {
         int unavailableCount = fleetKpi.getOrDefault("Unavailable", 0);
         int offlineCount = fleetKpi.getOrDefault("Offline", 0);
 
-
-        barChartJson =String.format("""
+        barChartJson = String.format("""
             {
                 "type": "bar",
                 "data": {
@@ -108,11 +140,56 @@ public class DashboardController {
                     }
                 }
             }
-            """, activeCount, maintenanceCount, unavailableCount, offlineCount );
+            """, activeCount, maintenanceCount, unavailableCount, offlineCount);
+
+        String labelsJson = statuses.stream()
+                .map(status -> "\"" + status + "\"")
+                .collect(Collectors.joining(", ", "[", "]"));
+
+// Convert counts to a JSON array string
+        String countsJson = counts.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(", ", "[", "]"));
+        taskChartJson = String.format("""
+            {
+              "type": "doughnut",
+              "data": {
+                "labels": %s,
+                "datasets": [{
+                  "data": %s,
+                  "backgroundColor": [
+                    "rgba(54, 162, 235, 0.6)",
+                    "rgba(255, 206, 86, 0.6)",
+                    "rgba(75, 192, 192, 0.6)",
+                    "rgba(255, 99, 132, 0.6)"
+                  ],
+                  "borderWidth": 1
+                }]
+              },
+              "options": {
+                "responsive": true,
+                "plugins": {
+                  "legend": { "position": "bottom" }
+                }
+              }
+            }
+            """,
+                labelsJson, // e.g. ["PENDING","IN_TRANSIT","COMPLETED"]
+                countsJson // e.g. [5,10,3]
+        );
+
     }
 
     public String getBarChartJson() {
         return barChartJson;
+    }
+
+    public int getTotalTasks() {
+        return totalTasks;
+    }
+
+    public String getTaskChartJson() {
+        return taskChartJson;
     }
 
     public String getUserRole() {
@@ -122,8 +199,6 @@ public class DashboardController {
     public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
-    
-    
 
     public int getTotalVehicles() {
         return totalVehicles;

@@ -1,0 +1,72 @@
+
+
+services:
+  tms-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tms-payara
+    environment:
+      - DB_HOST=${POSTGRES_HOST}
+      - DB_PORT=5432
+      - DB_NAME=${POSTGRES_DB}
+      - DB_USER=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - tms-network
+    depends_on:
+      postgres:
+        condition: service_healthy               # Wait until Postgres is healthy :contentReference[oaicite:13]{index=13}
+    ports:
+      - "8080:8080"                              # App
+      - "4848:4848"                              # Admin
+    volumes:
+      - payara-deployments:/opt/payara/deployments  # Named volume for deployed artifacts :contentReference[oaicite:14]{index=14}
+    healthcheck:                                # Ensure your app is responding before Compose marks it up :contentReference[oaicite:15]{index=15}
+      test: ["CMD-SHELL", "curl --fail http://localhost:8080/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  postgres:
+    image: postgres:15
+    container_name: tms-postgres
+    env_file:
+      - .env
+    networks:
+      - tms-network
+    volumes:
+      - postgres-data:/var/lib/postgresql/data     # Named volume for PG data :contentReference[oaicite:16]{index=16}
+    healthcheck:                                  # Use pg_isready to verify DB availability :contentReference[oaicite:17]{index=17}
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+  flyway:
+    image: flyway/flyway:10
+    container_name: tms-flyway
+    networks:
+      - tms-network
+    command: 
+      - -url=jdbc:postgresql://tms-postgres:5432/${POSTGRES_DB}
+      - -user=${POSTGRES_USER}
+      - -password=${POSTGRES_PASSWORD}
+      - -locations=filesystem:/flyway/sql
+      - -baselineOnMigrate=true
+      - -baselineVersion=1
+      - migrate
+    volumes:
+      - ./db/migrations:/flyway/sql:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+volumes:
+  postgres-data: {}    # Named volumes for persistence
+  payara-deployments: {}
+
+networks:
+  tms-network:
+    driver: bridge    # Isolate your app’s network
+

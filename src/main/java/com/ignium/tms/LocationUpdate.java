@@ -1,20 +1,34 @@
 package com.ignium.tms;
 
+import java.time.LocalDateTime;
+
 public class LocationUpdate {
 
-    private String driverId;
+    private String driverUsername;
     private double lat;
     private double lng;
     private float accuracy;
+    private LocalDateTime timestamp;
 
     // Getters and setters
-    public String getDriverId() {
-        return driverId;
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 
-    public void setDriverId(String driverId) {
-        this.driverId = driverId;
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
+
+            
+    public String getDriverUsername() {
+        return driverUsername;
+    }
+
+    public void setDriverUsername(String driverUsername) {
+        this.driverUsername = driverUsername;
+    }
+   
 
     public double getLat() {
         return lat;

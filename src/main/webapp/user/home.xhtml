@@ -14,7 +14,10 @@
             }
 
         </style>
-        
+        <h:outputScript>
+            window.driverUsername = "#{dashboardBean.username}";
+            console.log("Driver username:", window.driverUsername);
+        </h:outputScript>
         <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet" />
         
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -66,7 +69,71 @@
                     </div>
                     <div class="card-body p-0">
                         
+                        <h:form>
+                        <p:dataTable id="taskTable" var="task" value="#{taskController.userTasks}" 
+                                         paginator="true" rows="10"  >
+
+                                <p:column headerText="Title">
+                                    <h:outputText value="#{task.title}" />
+                                </p:column>
+
+                                <p:column headerText="Notes">
+                                    <h:outputText value="#{task.notes}" />
+                                </p:column>
+
+                                <p:column headerText="Pickup Location">
+                                    <h:outputText value="#{task.pickupDesination}" />
+                                </p:column>
+
+                                <p:column headerText="Destination Location">
+                                    <h:outputText value="#{task.destinationLocation}" />
+                                </p:column>
+
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{task.status}" />
+                                </p:column>
+
+                                <p:column headerText="Actions">
+                                    <p:commandButton value="Start" action="#{taskController.startTask(task.id)}" 
+                                                     update="taskTable messages" 
+                                                     rendered="#{task.status eq 'PENDING'}" 
+                                                     styleClass="ui-button-success" />
+
+                                    <p:commandButton value="Complete" action="#{taskController.completeTask(task.id)}" 
+                                                     update="taskTable messages" 
+                                                     rendered="#{task.status eq 'IN_PROGRESS'}" 
+                                                     styleClass="ui-button-primary" />
+                                </p:column>
+
+                            </p:dataTable>
+                            </h:form>
                     </div> 
+                </div>
+                <div class="modal fade" id="driverInfoModal" tabindex="-1" aria-labelledby="driverInfoLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="driverInfoLabel">Driver Details</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <dl class="row mb-0">
+                            <dt class="col-sm-4">Username</dt>
+                            <dd class="col-sm-8" id="modal-username">–</dd>
+                            <dt class="col-sm-4">Email</dt>
+                            <dd class="col-sm-8" id="modal-email">–</dd>
+                            <dt class="col-sm-4">Phone Number</dt>
+                            <dd class="col-sm-8" id="modal-phone">–</dd>
+
+                          </dl>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button"
+                                  class="btn btn-secondary"
+                                  data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>

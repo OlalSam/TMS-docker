@@ -30,9 +30,25 @@ function createCustomMarker() {
     markerEl.style.backgroundSize = 'cover';
     markerEl.style.cursor = 'pointer'; // Indicates interactivity
 
-    markerEl.addEventListener('click', function () {
-        alert('Marker clicked!');
+    markerEl.addEventListener('click', () => {
+        fetch(`/TMS/api/profile/driverDetails`)
+                .then(res => {
+                    if (!res.ok)
+                        throw new Error(res.statusText);
+                    return res.json();
+                })
+                .then(profile => {
+                    document.getElementById('modal-username').textContent = profile.username;
+                    document.getElementById('modal-email').textContent = profile.email;
+                    document.getElementById('modal-phone').textContent = profile.phoneNumber;
+                    new bootstrap.Modal(document.getElementById('driverInfoModal')).show();
+                })
+                .catch(err => {
+                    console.error('Error loading profile:', err);
+                    alert('Unable to load driver details.');
+                });
     });
+
 
     return markerEl;
 }
@@ -41,7 +57,7 @@ function sendGeolocationData(position) {
     var userData = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
-        driverId: "empty" // Optionally, assign a unique identifier
+        driverName: window.driverUsername // Optionally, assign a unique identifier
     };
 
     // Ensure the WebSocket connection is open before sending
