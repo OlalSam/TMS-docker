@@ -49,7 +49,7 @@
     <data-source>
         <name> java:global/tms</name>
         <class-name> org.postgresql.ds.PGSimpleDataSource</class-name>
-        <server-name>tms-postgres</server-name>
+        <server-name>localhost</server-name>
   	<port-number>5432</port-number>
         <database-name> tms</database-name>
         <user>olal</user>

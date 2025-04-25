@@ -15,26 +15,29 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Update Employee</h1>
                                 </div>
-                                <h:form styleClass="user">
+                                
+                                <!-- Display global messages -->
+                                <h:messages globalOnly="true" styleClass="alert alert-danger" 
+                                           rendered="#{facesContext.maximumSeverity != null}"/>
+                                
+                                <h:form id="updateEmployeeForm" styleClass="user">
+                                    <!-- Hidden field for userId -->
+                                    <h:inputHidden value="#{employeeController.selectedEmployee.userId}" />
+                                    
                                     <!-- Username -->
                                     <div class="form-group">
                                         <h:outputLabel for="username" value="Username" styleClass="form-label"/>
-                                        <h:inputText id="username"
+                                        <p:inputText id="username"
                                                      styleClass="form-control form-control-user"
                                                      disabled="true"
-                                                     requiredMessage="Username is required"
-                                                     value="#{employeeController.selectedEmployee.username}">
-                                            <f:validator validatorId="employeeValidator"/>
-                                            <f:attribute name="fieldName" value="username"/>
-                                            <f:attribute name="employeeId" value="#{employeeController.selectedEmployee.userId}"/>
-                                        </h:inputText>
-                                        <h:message for="username" styleClass="text-danger small"/>
+                                                     value="#{employeeController.selectedEmployee.username}"/>
+                                        <p:message for="username" styleClass="text-danger small"/>
                                     </div>
 
                                     <!-- Email -->
                                     <div class="form-group">
                                         <h:outputLabel for="email" value="Email" styleClass="form-label"/>
-                                        <h:inputText id="email"
+                                        <p:inputText id="email"
                                                      styleClass="form-control form-control-user"
                                                      required="true"
                                                      requiredMessage="Email is required"
@@ -42,68 +45,74 @@
                                             <f:validator validatorId="employeeValidator"/>
                                             <f:attribute name="fieldName" value="email"/>
                                             <f:attribute name="employeeId" value="#{employeeController.selectedEmployee.userId}"/>
-                                        </h:inputText>
-                                        <h:message for="email" styleClass="text-danger small"/>
+                                        </p:inputText>
+                                        <p:message for="email" styleClass="text-danger small"/>
                                     </div>
                                    
-
                                     <!-- Phone Number -->
                                     <div class="form-group">
                                         <h:outputLabel for="phoneNumber" value="Phone Number" styleClass="form-label"/>
-                                        <h:inputText id="phoneNumber"
+                                        <p:inputText id="phoneNumber"
                                                      styleClass="form-control form-control-user"
                                                      required="true"
-                                                       requiredMessage="Phone number is required"
+                                                     requiredMessage="Phone number is required"
                                                      value="#{employeeController.selectedEmployee.phoneNumber}">
                                             <f:validator validatorId="employeeValidator"/>
-                                            <f:attribute name="fieldName" value="phone_number"/>
+                                            <f:attribute name="fieldName" value="phoneNumber"/>
                                             <f:attribute name="employeeId" value="#{employeeController.selectedEmployee.userId}"/>
-                                        </h:inputText>
-                                        <h:message for="phoneNumber" styleClass="text-danger small"/>
+                                        </p:inputText>
+                                        <p:message for="phoneNumber" styleClass="text-danger small"/>
                                     </div>
 
                                     <!-- First Name -->
                                     <div class="form-group">
                                         <h:outputLabel for="firstName" value="First Name" styleClass="form-label"/>
-                                        <h:inputText id="firstName"
+                                        <p:inputText id="firstName"
                                                      styleClass="form-control form-control-user"
                                                      required="true"
                                                      requiredMessage="First name is required"
-                                                     value="#{employeeController.selectedEmployee.firstName}"/>
-                                        <h:message for="firstName" styleClass="text-danger small"/>
+                                                     value="#{employeeController.selectedEmployee.firstName}"
+                                                     validatorMessage="First name must contain only letters">
+                                            <f:validateRegex pattern="[A-Za-z]+"/>
+                                        </p:inputText>
+                                        <p:message for="firstName" styleClass="text-danger small"/>
                                     </div>
 
                                     <!-- Second Name -->
                                     <div class="form-group">
                                         <h:outputLabel for="secondName" value="Second Name" styleClass="form-label"/>
-                                        <h:inputText id="secondName"
+                                        <p:inputText id="secondName"
                                                      styleClass="form-control form-control-user"
                                                      required="true"
                                                      requiredMessage="Second name is required"
-                                                     value="#{employeeController.selectedEmployee.secondName}"/>
-                                        <h:message for="secondName" styleClass="text-danger small"/>
+                                                     value="#{employeeController.selectedEmployee.secondName}"
+                                                     validatorMessage="Second name must contain only letters">
+                                            <f:validateRegex pattern="[A-Za-z]+"/>
+                                        </p:inputText>
+                                        <p:message for="secondName" styleClass="text-danger small"/>
                                     </div>
 
                                     <!-- Status -->
                                     <div class="form-group">
                                         <h:outputLabel for="status" value="Status" styleClass="form-label"/>
-                                        <h:selectOneMenu id="status"
-                                                         styleClass="form-select"
-                                                         value="#{employeeController.selectedEmployee.status}">
+                                        <p:selectOneMenu id="status"
+                                                     styleClass="form-select"
+                                                     value="#{employeeController.selectedEmployee.status}">
                                             <f:selectItem itemLabel="Active" itemValue="ACTIVE"/>
                                             <f:selectItem itemLabel="Inactive" itemValue="INACTIVE"/>
-                                        </h:selectOneMenu>
-                                        <h:message for="status" styleClass="text-danger small"/>
+                                        </p:selectOneMenu>
+                                        <p:message for="status" styleClass="text-danger small"/>
                                     </div>
 
-                                    <!-- Register Button -->
-                                    <h:commandButton styleClass="btn btn-primary btn-user btn-block"
-                                                     value="Update Employee"
-                                                     action="#{employeeController.updateEmployee()}"/>
+                                    <!-- Update Button -->
+                                    <p:commandButton styleClass="btn btn-primary btn-user btn-block"
+                                                   value="Update Employee"
+                                                   action="#{employeeController.updateEmployee()}"
+                                                   update="@form"/>
 
                                     <hr/>
                                     <div class="text-center">
-                                        <h:link outcome="employee" styleClass="small" value=" Cancel "/>
+                                        <p:link outcome="employee" styleClass="small" value="Cancel"/>
                                     </div>
                                 </h:form>
                                 <hr/>

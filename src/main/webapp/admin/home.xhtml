@@ -7,15 +7,17 @@
     <ui:define name="title">TMS | Dashboard</ui:define>
 
     <ui:define name="content">
-        <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet" />
-
-        <style>
-            #map, #chart, #piechart {
-                height: 70vh;
-                width: 100%;
-                z-index: 1;
-            }
-        </style>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        #map, #piechart{
+            height: 70vh;
+            width: 100%;
+            z-index: 1;
+        }
+        #chart{
+            height: 500px;
+        }
+    </style>
         
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -108,14 +110,13 @@
             <div class="col-xl-6 col-12 mb-4">
                 <div class="card shadow h-100">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Vehile Distribution</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Task Chart</h6>
                     </div>
                     <div class="card-body">
-                        <p:growl id="growl" />
-                        <p:chart id="chart" value="#{dashboardBean.barChartJson}" 
+                        <p:chart id="piechart" value="#{dashboardBean.taskChartJson}" 
                                 widgetVar="vehicleChart">
                             
-                        </p:chart>  
+                        </p:chart> 
                     </div>
                 </div>
             </div>
@@ -144,20 +145,58 @@
                         <h6 class="m-0 font-weight-bold text-primary">Tasks</h6>
                     </div>
                     <div class="card-body p-0">
-                        
+                        <div class="table-responsive">
+                            <p:dataTable id="taskTable"
+                                         value="#{taskController.taskList}"
+                                         var="task"
+                                         paginator="true"
+                                         rows="10"
+                                         paginatorPosition="bottom"
+                                         styleClass="table table-bordered">
+
+                                <p:column headerText="ID" style="width:50px">
+                                    <h:outputText value="#{task.id}" />
+                                </p:column>
+
+                                <p:column headerText="Driver">
+                                    <h:outputText value="#{task.driverName}" />
+                                </p:column>
+
+                                <p:column headerText="Plate No">
+                                    <h:outputText value="#{task.numberPlate}" />
+                                </p:column>
+
+                                <p:column headerText="Title">
+                                    <h:outputText value="#{task.title}" />
+                                </p:column>
+
+                                <p:column headerText="Notes">
+                                    <h:outputText value="#{task.notes}" />
+                                </p:column>
+
+                                <p:column headerText="Pickup">
+                                    <h:outputText value="#{task.pickupDesination}" />
+                                </p:column>
+
+                                <p:column headerText="Destination">
+                                    <h:outputText value="#{task.destinationLocation}" />
+                                </p:column>
+
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{task.status}" />
+                                </p:column>
+                            </p:dataTable>
+                        </div>
                     </div> 
                 </div>
             </div>
             <div class="col-12 mb-4">
                 <div class="card shadow h-100">
                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Tasks Chart</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Vehicle Distribution</h6>
                     </div>
                     <div class="card-body p-0">
-                        <p:chart id="piechart" value="#{dashboardBean.taskChartJson}" 
-                                widgetVar="vehicleChart">
-                            
-                        </p:chart>  
+                        <p:chart id="chart" value="#{dashboardBean.barChartJson}" ></p:chart>
                     </div> 
                 </div>
                  <div class="modal fade" id="driverInfoModal" tabindex="-1" aria-labelledby="driverInfoLabel" aria-hidden="true">

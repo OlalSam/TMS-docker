@@ -112,4 +112,8 @@ public class FleetController extends LazyDataModel<Vehicle> implements Serializa
         message.addErrorMessage("Error updating vehicle. Try again.");
         return "vehicleForm.xhtml";
     }
+    
+    public void deleteVehicle(String plateNumber){
+        
+    }
 }

@@ -20,8 +20,8 @@ public class MailUtility {
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
 
-        final String username = "harmanhamoso1@gmail.com";
-        final String password = "podocpmliyynxayn"; // Replace with your Gmail App Password
+        final String username = "inyanzamutsotso255@gmail.com";
+        final String password = "dsbxmzqaazkuexpg"; // Replace with your Gmail App Password
 
         mailSession = Session.getInstance(props, new Authenticator() {
             @Override
@@ -33,7 +33,7 @@ public class MailUtility {
 
     public void send(String to, String subject, String body) throws MessagingException {
         MimeMessage msg = new MimeMessage(mailSession);
-        msg.setFrom(new InternetAddress("harmanhamoso1@gmail.com"));
+        msg.setFrom(new InternetAddress("inyanzamutsotso255@gmail.com"));
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
         msg.setSubject(subject);
         msg.setText(body); // plain text
@@ -50,7 +50,7 @@ public class MailUtility {
         String htmlSignature = "<br/><br/>—<br/><strong>Transport Management System</strong><br/>123 Main St, Nairobi<br/>"
                              + "<a href=\"https://www.transportms.co.ke\">www.transportms.co.ke</a>";
         MimeMessage msg = new MimeMessage(mailSession);
-        msg.setFrom(new InternetAddress("harmanhamoso1@gmail.com"));
+        msg.setFrom(new InternetAddress("inyanzamutsotso255@gmail.com"));
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
         msg.setSubject(subject);
         msg.setContent(htmlBody + htmlSignature, "text/html; charset=UTF-8");

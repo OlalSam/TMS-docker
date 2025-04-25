@@ -173,7 +173,7 @@ public class TaskController implements Serializable {
         return "taskUpdateForm.xhtml";
     }
 
-// Delete
+    // Delete
     public void deleteTask(Long taskId) {
         taskDao.delete(taskId);
         message.addSuccessMessage("Task deleted.");

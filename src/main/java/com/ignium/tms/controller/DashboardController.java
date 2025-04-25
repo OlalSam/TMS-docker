@@ -4,15 +4,15 @@
  */
 package com.ignium.tms.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ignium.tms.employee.EmployeeDao;
 import com.ignium.tms.fleet.FleetDao;
 import com.ignium.tms.taskmanagement.TaskDaoApi;
 import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.security.enterprise.SecurityContext;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
  * @author olal
  */
 @Named("dashboardBean")
-@RequestScoped
-public class DashboardController {
+@ViewScoped
+public class DashboardController implements Serializable {
 
     @Inject
     private EmployeeDao employeeService;
@@ -180,6 +180,9 @@ public class DashboardController {
 
     }
 
+    public String getAdminBar(){
+        return barChartJson;
+    }
     public String getBarChartJson() {
         return barChartJson;
     }

@@ -28,40 +28,93 @@ public class EmployeeValidator implements Validator<String> {
 
     @Override
     public void validate(FacesContext context, UIComponent component, String value) throws ValidatorException {
+        if (value == null || value.trim().isEmpty()) {
+            return; // Let required validator handle empty values
+        }
+        
         String fieldName = (String) component.getAttributes().get("fieldName");
-        // Optionally, pass the employee ID to ignore the current record during update
         Object employeeIdObj = component.getAttributes().get("employeeId");
+        
+        if (fieldName == null) {
+            return; // No field name specified, nothing to validate
+        }
 
-        if (fieldName != null) {
+        // Check for unique constraints in database
+        try {
             if (fieldExists(fieldName, value, employeeIdObj)) {
-                String message = switch (fieldName) {
-                    case "username" -> "Username already exists. Please choose a different username.";
-                    case "email" -> "Email already exists. Please use a different email.";
-                    case "phoneNumber" -> "Phone number already exists. Please use a different phone number.";
-                    default -> "Invalid field validation.";
-                };
+                String fieldLabel = getFieldLabel(fieldName);
+                String message = fieldLabel + " already exists. Please choose a different " + fieldLabel.toLowerCase() + ".";
                 throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
             }
+        } catch (RuntimeException e) {
+            // If it's not our custom exception, it's probably a DB error
+            if (!(e instanceof ValidatorException)) {
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                    "A system error occurred while validating this field. Please try again later.", null));
+            }
+            throw e;
+        }
+        
+        // Additional field-specific validations
+        switch (fieldName) {
+            case "username":
+                if (value.length() < 4) {
+                    throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Username must be at least 4 characters long", null));
+                }
+                if (!value.matches("^[a-zA-Z0-9_]+$")) {
+                    throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Username can only contain letters, numbers, and underscores", null));
+                }
+                break;
+                
+            case "email":
+                if (!value.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
+                    throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Please enter a valid email address", null));
+                }
+                break;
+                
+            case "phoneNumber":
+                if (!value.matches("^[0-9]{10,15}$")) {
+                    throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Phone number must contain 10-15 digits only", null));
+                }
+                break;
         }
     }
 
+    private String getFieldLabel(String fieldName) {
+        return switch (fieldName) {
+            case "username" -> "Username";
+            case "email" -> "Email";
+            case "phoneNumber" -> "Phone number";
+            default -> fieldName;
+        };
+    }
+
     private boolean fieldExists(String fieldName, String fieldValue, Object employeeIdObj) {
-        // If employeeIdObj is provided, assume it's an update.
-        // Modify the SQL query to ignore the record with that employeeId.
+        // Map field names to database column names
+        String dbColumn = switch (fieldName) {
+            case "phoneNumber" -> "phone_number";
+            default -> fieldName;
+        };
+        
         String sql;
         if (employeeIdObj != null) {
-            sql = "SELECT COUNT(*) FROM users WHERE " + fieldName + " = ? AND id <> ?";
+            sql = "SELECT COUNT(*) FROM users WHERE " + dbColumn + " = ? AND id <> ?";
         } else {
-            sql = "SELECT COUNT(*) FROM users WHERE " + fieldName + " = ?";
+            sql = "SELECT COUNT(*) FROM users WHERE " + dbColumn + " = ?";
         }
+        
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
              
             ps.setString(1, fieldValue);
             if (employeeIdObj != null) {
-                // Assume employeeId is an Integer; adjust type if necessary.
                 ps.setObject(2, employeeIdObj);
             }
+            
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next() && rs.getInt(1) > 0;
             }

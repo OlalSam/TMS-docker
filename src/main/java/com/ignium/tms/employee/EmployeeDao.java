@@ -88,7 +88,7 @@ public class EmployeeDao implements EmployeeDaoApi, Serializable {
     @Override
     public List<Employee> getAllEmployee(int offset, int pageSize) {
         List<Employee> employees = new ArrayList<>();
-        String sql = "SELECT id, username, first_name, second_name, email, role, phone_number, status FROM users WHERE role = 'USER' ORDER BY id DESC LIMIT ? OFFSET ?";
+        String sql = "SELECT id, username, first_name, second_name, email, role, phone_number, status FROM users WHERE role = 'USER' AND status = 'ACTIVE' ORDER BY id DESC LIMIT ? OFFSET ?";
 
         try (var conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, pageSize);
@@ -140,7 +140,7 @@ public class EmployeeDao implements EmployeeDaoApi, Serializable {
 
     @Override
     public boolean deleteEmployee(int employeeId) {
-        String sql = "UPDATE users SET status = 'inactive' WHERE id = ?";
+        String sql = "UPDATE users SET status = 'INACTIVE' WHERE id = ?";
         boolean result = false;
         try (var conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, employeeId);
