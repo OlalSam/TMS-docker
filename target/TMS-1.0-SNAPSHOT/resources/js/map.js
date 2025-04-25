@@ -37,11 +37,12 @@ websocket.onmessage = function (evt) {
         // Create new marker + popup wiring
         const el = createDriverMarkerEl();
         const popup = new mapboxgl.Popup({offset: 25});
-
+        let driverNam = vehicleMarkers.get(driverName);
+        console.log(driverNam);
         // On click, fetch profile and populate your Bootstrap modal
         el.addEventListener('click', () => {
             popup.remove();  // hide any existing popup
-            fetch(`/TMS/api/profile/driverDetails/${encodeURIComponent(driverName)}`)
+            fetch(`/TMS/api/profile/driverDetails/${driverName}`)
                     .then(r => r.ok ? r.json() : Promise.reject(r.statusText))
                     .then(profile => {
                         // Populate your modal divs

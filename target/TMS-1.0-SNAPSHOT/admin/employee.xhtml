@@ -11,6 +11,14 @@
             </div>
             <h:form id="employeeForm">
                 <div class="card shadow mb-4">
+                    <p:growl id="growl"
+                        showSummary="true"
+                        showDetail="true"
+                        life="3000"
+                        sticky="false"
+                        globalOnly="false">
+                         <p:autoUpdate/>
+                    </p:growl>
                     <div class="card-header py-3 d-flex justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Employee Table</h6>
                         <p:linkButton styleClass="p-button p-button-primary "  value ="New Employee" outcome="employeeForm"  />

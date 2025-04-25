@@ -12,7 +12,14 @@
             </div>
 
             <h:form id="fleetForm">
-                <h:messages infoClass="alert alert-success" errorClass="alert alert-danger" />
+                <p:growl id="growl"
+                   showSummary="true"
+                   showDetail="true"
+                   life="3000"
+                   sticky="false"
+                   globalOnly="false">
+                    <p:autoUpdate/>
+                </p:growl>
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Fleet Table</h6>
@@ -58,37 +65,7 @@
                 </div>
             </h:form>
 
-            <h:form id="fleetEditForm">
-                <p:dialog header="Edit Vehicle Information" widgetVar="editDialog" modal="true" resizable="false" closable="true">
-                    <div class="card-body">
-                        <div class="form-group mb-3">
-                            <h:outputLabel for="plateNumber" value="Plate Number:" class="font-weight-bold" />
-                            <p:inputText id="plateNumber" value="#{fleetController.selectedVehicle.plateNumber}" disabled="true"
-                                         class="form-control" />
-                        </div>
-                        <div class="form-group mb-3">
-                            <h:outputLabel for="model" value="Vehicle Model:" class="font-weight-bold" />
-                            <p:inputText id="model" value="#{fleetController.selectedVehicle.vehicleModel}"
-                                         class="form-control" />
-                        </div>
-                        <div class="form-group mb-3">
-                            <h:outputLabel for="type" value="Vehicle Type:" class="font-weight-bold" />
-                            <p:inputText id="type" value="#{fleetController.selectedVehicle.vehicleType}"
-                                         class="form-control" />
-                        </div>
-                        <div class="form-group mb-3">
-                            <h:outputLabel for="status" value="Status:" class="font-weight-bold" />
-                            <p:inputText id="status" value="#{fleetController.selectedVehicle.status}"
-                                         class="form-control" />
-                        </div>
-                    </div>
-                    <div class="card-footer text-right">
-                        <p:commandButton value="Save" action="#{fleetController.updateVehicle}"
-                                         update=":fleetEditForm :fleetForm"
-                                         oncomplete="PF('editDialog').hide();" class="btn btn-success" />
-                    </div>
-                </p:dialog>
-            </h:form>
+       
         </div>
     </ui:define>
 </ui:composition>
